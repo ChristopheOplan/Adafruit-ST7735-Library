@@ -177,32 +177,9 @@ void Adafruit_ST77xx::setAddrWindow(uint16_t x, uint16_t y, uint16_t w,
 /**************************************************************************/
 void Adafruit_ST77xx::setRotation(uint8_t m) {
   uint8_t madctl = 0;
-
-  rotation = m % 4; // can't be higher than 3
-
-  switch (rotation) {
-  case 0:
-    madctl = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB;
-    _xstart = _colstart;
-    _ystart = _rowstart;
-    break;
-  case 1:
-    madctl = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB;
-    _ystart = _colstart;
-    _xstart = _rowstart;
-    break;
-  case 2:
-    madctl = ST77XX_MADCTL_RGB;
-    _xstart = _colstart;
-    _ystart = _rowstart;
-    break;
-  case 3:
-    madctl = ST77XX_MADCTL_MX | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB;
-    _ystart = _colstart;
-    _xstart = _rowstart;
-    break;
-  }
-
+  madctl = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB;
+  _ystart = _colstart;
+  _xstart = _rowstart;
   sendCommand(ST77XX_MADCTL, &madctl, 1);
 }
 
@@ -236,16 +213,6 @@ void Adafruit_ST77xx::enableDisplay(boolean enable) {
 /**************************************************************************/
 void Adafruit_ST77xx::enableTearing(boolean enable) {
   sendCommand(enable ? ST77XX_TEON : ST77XX_TEOFF);
-}
-
-/**************************************************************************/
-/*!
- @brief  Change whether sleep mode is on or off
- @param  enable True if you want sleep mode ON, false OFF
- */
-/**************************************************************************/
-void Adafruit_ST77xx::enableSleep(boolean enable) {
-  sendCommand(enable ? ST77XX_SLPIN : ST77XX_SLPOUT);
 }
 
 ////////// stuff not actively being used, but kept for posterity
